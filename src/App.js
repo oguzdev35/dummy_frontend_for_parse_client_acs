@@ -8,7 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 import Doors from './Components/Doors';
-import Administration from './Components/Administration'
+import Administration from './Components/Administration';
+import Panel from './Components/Panel';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -74,7 +75,7 @@ export default function SimpleTabs() {
         <Administration />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Panel
+        <Panel />
       </TabPanel>
     </div>
   );

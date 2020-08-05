@@ -5,6 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { updatePersonAPI } from '../../utility';
 
+import DoorTransfer from './DoorTransfer';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
@@ -19,14 +21,28 @@ export default function StateTextFields() {
   const [name, setName] = React.useState('');
   const [id, setId] = React.useState('');
   const [title, setTitle] = React.useState('');
+  const [doors, setDoors] = React.useState([]);
+
 
   const handleSubmit = ev => {
+      let newDoors = [];
       ev.preventDefault();
-      updatePersonAPI(name, id, title);
+      doors.forEach( ({id, status}) => {
+        if(status){
+          console.log(status, id);
+          newDoors.push(id)
+        }
+
+      })
+      console.log(newDoors)
+      updatePersonAPI(name, id, title, newDoors);
       setName('');
       setId('');
       setTitle('');
+      setDoors([]);
   }
+
+
 
   return (
     <form className={classes.root} noValidate autoComplete="off">
@@ -59,6 +75,9 @@ export default function StateTextFields() {
             variant="outlined"
             style={{width: '40vw'}}
             />
+        </div>
+        <div>
+          <DoorTransfer doors={doors} setDoors={setDoors} />
         </div>
         <div>
             <Button 

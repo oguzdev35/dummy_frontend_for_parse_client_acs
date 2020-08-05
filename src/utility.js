@@ -1,5 +1,7 @@
 import Axios from 'axios';
 
+
+
 export const createDoorAPI = (name, id) => {
 
     Axios({
@@ -44,7 +46,7 @@ export const updateDoorAPI = (name, id) => {
 
 }
 
-export const updatePersonAPI = (name, id, title) => {
+export const updatePersonAPI = (name, id, title, doors) => {
 
     Axios({
         method: 'POST',
@@ -56,7 +58,8 @@ export const updatePersonAPI = (name, id, title) => {
         data: {
             "personID": id,
             "name": name,
-            "title": title
+            "title": title,
+            "doors": doors
         }
     })
         .then( res =>  console.log(res.data))
@@ -152,6 +155,28 @@ export const deletePersonAPI = personID => {
         }
     })
         .then( res => console.log(res.data))
+        .catch( err => {
+            console.log(err.message);
+            return null;
+        })
+}
+
+export const accessAPI = (personID, doorID) => {
+    return Axios({
+        method: 'POST',
+        url: '/access',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        data: {
+            'personID': personID,
+            'doorID': doorID
+        }
+    })
+        .then( res => {
+            return res.data
+        })
         .catch( err => {
             console.log(err.message);
             return null;
