@@ -1,7 +1,7 @@
 {
   "name": "dummyfrontend",
   "version": "0.1.0",
-  "proxy": "http://localhost:3000",
+  "proxy": "https://acl-ms-parse-client.herokuapp.com",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.0",
@@ -15,7 +15,7 @@
     "parse": "^2.15.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.0"
   },
   "scripts": {
     "start-win": "set PORT=5000 && react-scripts start",
