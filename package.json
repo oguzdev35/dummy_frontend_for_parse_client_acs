@@ -19,8 +19,7 @@
   },
   "scripts": {
     "start-win": "set PORT=5000 && react-scripts start",
-    "start": "DANGEROUSLY_DISABLE_HOST_CHECK=true serve -s build",
-    "start-old": "DANGEROUSLY_DISABLE_HOST_CHECK=true react-scripts start",
+    "start": "DANGEROUSLY_DISABLE_HOST_CHECK=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
