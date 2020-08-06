@@ -91,13 +91,13 @@ export default function StickyHeadTable() {
 
       let LiveQueryClient = Parse.LiveQueryClient;
       let client = new LiveQueryClient({
-      applicationId: 'myAppID',
-      serverURL: 'ws://localhost:2000/parse',
+      applicationId: process.env.REACT_APP_APPID,
+      serverURL: process.env.REACT_APP_SERVERURL_WS,
       javascriptKey: '',
-      masterKey: 'myMasterKey'
+      masterKey: process.env.REACT_APP_MASTERKEY
       });
 
-      const Door = Parse.Object.extend('Door');
+      const Door = Parse.Object.extend(process.env.REACT_APP_DOOR_CLASSNAME);
       const query = new Parse.Query(Door);
 
       client.on('open', () => {
