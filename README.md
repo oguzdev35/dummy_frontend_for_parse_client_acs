@@ -10,3 +10,10 @@ silinmesi, listelenmesine olanak sağlar.
 "Panel" sekmesi ise "web-socket" protokolü ile yapılmıştır. Database'te oluşan herhangi bir değişiklik 
 backend serverdan test-clientine push edilir. Böylece Panel üzerindeki loglar sayfa yenilemeye gerek 
 kalmadan güncelenebilir. 
+
+# Nasıl Çalıştırılır?
+
+.env dosyası sisteme uygun modifiye edilir. Daha sonra:
+
+windowsta: yarn start-win
+linuxta veya macosta: yarn start-nix
