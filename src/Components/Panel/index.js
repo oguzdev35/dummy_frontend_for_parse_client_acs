@@ -69,6 +69,7 @@ export default function StickyHeadTable() {
   console.log(doors)
 
   React.useEffect( () => {
+    setRows([]);
     doors.forEach(({doorName, logs}) => {
         logs.forEach(({personName, lastaccess, access}) => {
             setRows(state => ([
