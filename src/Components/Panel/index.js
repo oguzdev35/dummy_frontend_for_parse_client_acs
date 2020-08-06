@@ -184,6 +184,7 @@ export default function StickyHeadTable() {
         </Table>
       </TableContainer>
       <TablePagination
+        labelRowsPerPage="Logs per page"
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
         count={rows.length}

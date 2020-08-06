@@ -63,7 +63,7 @@ export default function CheckboxesGroup({doors, setDoors}) {
   return (
     <div className={classes.root}>
       <FormControl component="fieldset" className={classes.formControl}>
-        <FormLabel component="legend">Assign door</FormLabel>
+        <FormLabel component="legend">Assign door (Required*)</FormLabel>
         <FormGroup>
 
           {doors.map( ({id, status}) => {

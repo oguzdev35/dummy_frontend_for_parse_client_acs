@@ -11,7 +11,7 @@ import { getPersonsAPI } from '../../utility';
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120,
+    minWidth: 180,
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -27,7 +27,7 @@ export default function SimpleSelect({authorizedUserID, setAuthorizedUserID}) {
     getPersonsAPI()
         .then( newUsers => {
             newUsers.forEach( ({personID}) => {
-                setUsers([...users, personID])
+                setUsers(state => ([...state, personID]))
             })
         })
         .catch( err => console.log(err))
