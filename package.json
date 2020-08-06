@@ -15,12 +15,11 @@
     "parse": "^2.15.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.0",
-    "serve": "^11.3.2"
+    "react-scripts": "3.2.0"
   },
   "scripts": {
     "start-win": "set PORT=5000 && react-scripts start",
-	"start": "DANGEROUSLY_DISABLE_HOST_CHECK=true serve -s build",
+    "start": "DANGEROUSLY_DISABLE_HOST_CHECK=true serve -s build",
     "start-old": "DANGEROUSLY_DISABLE_HOST_CHECK=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
