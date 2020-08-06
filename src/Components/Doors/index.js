@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/core/Icon';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TextField from '@material-ui/core/TextField';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
@@ -14,41 +15,61 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import Alert from '@material-ui/lab/Alert';
 
 import { getDoorsAPI, accessAPI } from '../../utility';
 
-import PopupResponse from './PopupResponse';
 import SelectUser from './SelectUser';
 
-const useRowStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   root: {
     '& > *': {
       borderBottom: 'unset',
     },
   },
-});
+  alert: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
 
-const handleAccess = (doorID, personID) => ev => {
+const handleAccess = (doorID, personID, setAlert, setMessage) => ev => {
   return accessAPI(personID, doorID)
-    .then( res => console.log(res))
+    .then( ({response}) => {
+        setMessage(response);
+        setAlert(true);
+        setTimeout(() => {
+          setAlert(false);
+          setMessage("");
+        }, 2 * 1000)
+      }
+      )
     .catch( err => console.log(err.message))
 }
 
-function createData(name, id, logs, personID) {
+function createData(name, id, logs, personID, setAlert, setMessage) {
   return {
     name: name,
     id: id,
     history: logs,
-    accessButton: () => <PopupResponse 
-        onClick={handleAccess(id, personID)}
-      />
+    accessButton: () => <Button
+        variant="contained"
+        color="primary"
+        style={{margin: "1vw"}}
+        endIcon={<Icon>send</Icon>}
+        onClick={handleAccess(id, personID, setAlert, setMessage)}
+    >
+        Access
+    </Button>
   };
 }
 
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
-  const classes = useRowStyles();
+  const classes = useStyles();
 
   return (
     <React.Fragment>
@@ -82,12 +103,12 @@ function Row(props) {
                 </TableHead>
                 <TableBody>
                   {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.lastaccess}>
+                    <TableRow key={historyRow.lastaccess.number}>
                       <TableCell component="th" scope="row">
-                        {historyRow.lastaccess}
+                        {historyRow.lastaccess.string}
                       </TableCell>
-                      <TableCell>{historyRow.personId}</TableCell>
-                      <TableCell align="right">{historyRow.personName}</TableCell>
+                      <TableCell>{historyRow.personName}</TableCell>
+                      <TableCell align="right">{historyRow.personId}</TableCell>
                       <TableCell align="right">
                         {historyRow.access ? "Permit" : "Deny"}
                       </TableCell>
@@ -108,14 +129,20 @@ export default function CollapsibleTable() {
 
   const [doors, setDoors] = useState([]);
   const [authorizedUserID, setAuthorizedUserID] = React.useState("");
+  const [alert, setAlert] = React.useState(false);
+  const [message, setMessage] = React.useState("");
+  const classes = useStyles();
+
+
 
 
   useEffect( () => {
     getDoorsAPI()
       .then( newDoors => {
         let newList = []
-        newDoors.map( ({doorID, doorName, logs}) => {
-          newList.push(createData(doorName, doorID, logs, authorizedUserID))
+        newDoors.forEach( ({doorID, doorName, logs}) => {
+          const reversedLogs = logs.reverse();
+          newList.push(createData(doorName, doorID, reversedLogs, authorizedUserID, setAlert, setMessage))
         })
         setDoors(newList)
       })
@@ -126,6 +153,11 @@ export default function CollapsibleTable() {
 
   return (
     <div>
+      <div className={classes.alert}>
+        {alert && <Alert 
+          severity={message === "not-authorized" ? "error" : message === "authorized" ? "success" : "info"}
+          >{message === "not-authorized" ? "Denied" : message === "authorized" ? "Permitted" : "Unknown Command" }</Alert>}
+      </div>
       <div >
         
         <SelectUser authorizedUserID={authorizedUserID} setAuthorizedUserID={setAuthorizedUserID} />
