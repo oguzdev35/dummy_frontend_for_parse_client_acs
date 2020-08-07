@@ -89,11 +89,9 @@ export default function StickyHeadTable() {
   // livequery client initialization
   React.useEffect( () => {
 
-      const eventSource = new EventSource("//localhost:2000/p/ins01/sse-server");
+      const interval = setInterval( () => triggerForcedRefresh(!forcedRefresh), 60 * 1000);
 
-      eventSource.onmessage = function(e){
-        console.log(e.data)
-      }
+      return () => clearInterval(interval)
 
   }, [])
 
