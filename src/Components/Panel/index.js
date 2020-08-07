@@ -1,5 +1,4 @@
 import React from 'react';
-import Parse from 'parse';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -90,49 +89,11 @@ export default function StickyHeadTable() {
   // livequery client initialization
   React.useEffect( () => {
 
-      let LiveQueryClient = Parse.LiveQueryClient;
-      let client = new LiveQueryClient({
-      applicationId: process.env.REACT_APP_APPID,
-      serverURL: process.env.REACT_APP_SERVERURL_WS,
-      javascriptKey: '',
-      masterKey: process.env.REACT_APP_MASTERKEY
-      });
+      const eventSource = new EventSource("//localhost:2000/p/ins01/sse-server");
 
-      const Door = Parse.Object.extend(process.env.REACT_APP_DOOR_CLASSNAME);
-      const query = new Parse.Query(Door);
-
-      client.on('open', () => {
-          console.log('open websocket client')
-      });
-      
-      client.open();
-
-      // session token  will be added for Parser serverside ACL
-      const subscription = client.subscribe(query, null);
-
-      subscription.on('open', () => {
-          console.log('subscription opened')
-      })
-
-      subscription.on('create', obj => {
-          console.log('Object created');
-          console.log(obj)
-      })
-
-      subscription.on('update', obj => {
-          console.log('Object updated')
-          triggerForcedRefresh(state => !state);
-      })
-
-      subscription.on('delete', obj => {
-          console.log('object deleted');
-      })
-
-      subscription.on('close', () => {
-          console.log('subscription closed');
-      })
-
-      return () => client.close()
+      eventSource.onmessage = function(e){
+        console.log(e.data)
+      }
 
   }, [])
 
